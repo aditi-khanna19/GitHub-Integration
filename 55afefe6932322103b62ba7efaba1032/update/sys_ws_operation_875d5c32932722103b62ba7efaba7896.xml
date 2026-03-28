@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ws_operation">
+    <sys_ws_operation action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <consumes>application/json,application/xml,text/xml</consumes>
+        <consumes_customized>false</consumes_customized>
+        <default_operation_uri/>
+        <enforce_acl>cf9d01d3e73003009d6247e603f6a990</enforce_acl>
+        <http_method>POST</http_method>
+        <name>getIncident</name>
+        <operation_script><![CDATA[(function process( /*RESTAPIRequest*/ request, /*RESTAPIResponse*/ response) {
+
+    // implement resource here
+    var sysId = request.pathParams.sys_id;
+
+    // Initialize response object
+    var responseBody = {};
+
+    if (sysId) {
+        var gr = new GlideRecord('incident');
+        if (gr.get(sysId)) {
+            // Populate response with incident data
+            responseBody.number = gr.getValue('number');
+            responseBody.short_description = gr.getValue('short_description');
+            responseBody.state = gr.getDisplayValue('state'); // Get display value for state
+            response.setStatus(200); // OK
+        } else {
+            responseBody.error = "Incident not found with sys_id: " + sysId;
+            response.setStatus(404); // Not Found
+        }
+    } else {
+        responseBody.error = "sys_id parameter is missing.";
+        response.setStatus(400); // Bad Request
+    }
+
+    response.setBody(responseBody);
+
+})(request, response);]]></operation_script>
+        <operation_uri>/api/x_1590979_git_inte/my_data_api/items/{sys_id}</operation_uri>
+        <produces>application/json,application/xml,text/xml</produces>
+        <produces_customized>false</produces_customized>
+        <relative_path>/items/{sys_id}</relative_path>
+        <request_example/>
+        <requires_acl_authorization>true</requires_acl_authorization>
+        <requires_authentication>true</requires_authentication>
+        <requires_snc_internal_role>true</requires_snc_internal_role>
+        <short_description/>
+        <sys_class_name>sys_ws_operation</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-08-27 11:47:04</sys_created_on>
+        <sys_id>875d5c32932722103b62ba7efaba7896</sys_id>
+        <sys_mod_count>2</sys_mod_count>
+        <sys_name>getIncident</sys_name>
+        <sys_package display_value="Git Integration" source="x_1590979_git_inte">55afefe6932322103b62ba7efaba1032</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Git Integration">55afefe6932322103b62ba7efaba1032</sys_scope>
+        <sys_update_name>sys_ws_operation_875d5c32932722103b62ba7efaba107b</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-08-27 11:50:37</sys_updated_on>
+        <web_service_definition display_value="MyDataAPI">abc9007a93a322103b62ba7efaba1053</web_service_definition>
+        <web_service_version/>
+    </sys_ws_operation>
+</record_update>
